@@ -1,108 +1,237 @@
 object SettingsF: TSettingsF
-  Left = 292
-  Top = 377
-  Width = 500
-  Height = 220
+  Left = 215
+  Top = 158
+  Width = 468
+  Height = 280
   Caption = 'Settings'
-  Color = clBtnFace
+  Color = clWhite
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = False
+  Visible = True
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   DesignSize = (
-    492
-    182)
+    460
+    242)
   PixelsPerInch = 96
   TextHeight = 13
-  object Label1: TLabel
-    Left = 8
-    Top = 8
-    Width = 34
-    Height = 13
-    Caption = 'Device'
-  end
-  object Label2: TLabel
-    Left = 8
-    Top = 56
-    Width = 32
-    Height = 13
-    Caption = 'Format'
-  end
-  object Label3: TLabel
-    Left = 8
-    Top = 104
-    Width = 31
-    Height = 13
-    Caption = 'Codec'
-  end
-  object cbxCameras: TComboBox
-    Left = 8
-    Top = 24
-    Width = 476
-    Height = 21
-    BevelKind = bkFlat
-    Style = csDropDownList
-    Anchors = [akLeft, akTop, akRight]
-    ItemHeight = 13
-    TabOrder = 0
-    OnChange = cbxCamerasChange
-  end
-  object cbxFormats: TComboBox
-    Left = 8
-    Top = 72
-    Width = 476
-    Height = 21
-    BevelKind = bkFlat
-    Style = csDropDownList
-    Anchors = [akLeft, akTop, akRight]
-    ItemHeight = 13
-    TabOrder = 1
-  end
   object btnOK: TButton
-    Left = 8
-    Top = 152
+    Left = 4
+    Top = 212
     Width = 75
     Height = 25
     Anchors = [akLeft, akBottom]
     Caption = 'OK'
     Default = True
-    TabOrder = 2
+    TabOrder = 0
     OnClick = btnOKClick
   end
   object btnCancel: TButton
-    Left = 96
-    Top = 152
+    Left = 92
+    Top = 212
     Width = 75
     Height = 25
     Anchors = [akLeft, akBottom]
     Cancel = True
     Caption = 'Cancel'
-    TabOrder = 3
+    TabOrder = 1
     OnClick = btnCancelClick
   end
   object btnApply: TButton
-    Left = 184
-    Top = 152
+    Left = 180
+    Top = 212
     Width = 75
     Height = 25
     Anchors = [akLeft, akBottom]
     Caption = 'Apply'
-    TabOrder = 4
+    TabOrder = 2
     OnClick = btnApplyClick
   end
-  object cbxCodecs: TComboBox
-    Left = 8
-    Top = 120
-    Width = 476
-    Height = 21
-    BevelKind = bkFlat
-    Style = csDropDownList
-    Anchors = [akLeft, akTop, akRight]
-    ItemHeight = 13
-    TabOrder = 5
+  object PageControl1: TPageControl
+    Left = 0
+    Top = 0
+    Width = 460
+    Height = 203
+    ActivePage = TabSheet3
+    Anchors = [akLeft, akTop, akRight, akBottom]
+    Style = tsButtons
+    TabOrder = 3
+    object TabSheet1: TTabSheet
+      Caption = 'Video Streaming'
+      DesignSize = (
+        452
+        172)
+      object Label1: TLabel
+        Left = 0
+        Top = 4
+        Width = 34
+        Height = 13
+        Caption = 'Device'
+      end
+      object Label2: TLabel
+        Left = 0
+        Top = 52
+        Width = 32
+        Height = 13
+        Caption = 'Format'
+      end
+      object Label3: TLabel
+        Left = 0
+        Top = 100
+        Width = 31
+        Height = 13
+        Caption = 'Codec'
+      end
+      object cbxCameras: TComboBox
+        Left = 0
+        Top = 20
+        Width = 452
+        Height = 21
+        BevelKind = bkFlat
+        Style = csDropDownList
+        Anchors = [akLeft, akTop, akRight]
+        ItemHeight = 13
+        TabOrder = 0
+        OnChange = cbxCamerasChange
+      end
+      object cbxFormats: TComboBox
+        Left = 0
+        Top = 68
+        Width = 452
+        Height = 21
+        BevelKind = bkFlat
+        Style = csDropDownList
+        Anchors = [akLeft, akTop, akRight]
+        ItemHeight = 13
+        TabOrder = 1
+      end
+      object cbxCodecs: TComboBox
+        Left = 0
+        Top = 116
+        Width = 452
+        Height = 21
+        BevelKind = bkFlat
+        Style = csDropDownList
+        Anchors = [akLeft, akTop, akRight]
+        ItemHeight = 13
+        TabOrder = 2
+      end
+      object chkPreview: TCheckBox
+        Left = 0
+        Top = 152
+        Width = 97
+        Height = 17
+        Caption = 'Video Preview'
+        Checked = True
+        Ctl3D = False
+        ParentCtl3D = False
+        State = cbChecked
+        TabOrder = 3
+      end
+    end
+    object TabSheet2: TTabSheet
+      Caption = 'TCP/IP Server'
+      ImageIndex = 1
+      DesignSize = (
+        452
+        172)
+      object Label5: TLabel
+        Left = 0
+        Top = 8
+        Width = 19
+        Height = 13
+        Anchors = [akLeft, akBottom]
+        Caption = 'Port'
+      end
+      object txtServerPort: TEdit
+        Left = 0
+        Top = 24
+        Width = 89
+        Height = 21
+        Anchors = [akLeft, akBottom]
+        BevelKind = bkFlat
+        BorderStyle = bsNone
+        TabOrder = 0
+        Text = '33000'
+      end
+      object chkServer: TCheckBox
+        Left = 104
+        Top = 24
+        Width = 97
+        Height = 17
+        Caption = 'Active'
+        Checked = True
+        State = cbChecked
+        TabOrder = 1
+      end
+    end
+    object TabSheet3: TTabSheet
+      Caption = 'TCP/IP Client'
+      ImageIndex = 2
+      DesignSize = (
+        452
+        172)
+      object Label4: TLabel
+        Left = 0
+        Top = 4
+        Width = 22
+        Height = 13
+        Anchors = [akLeft, akBottom]
+        Caption = 'Host'
+      end
+      object Label6: TLabel
+        Left = 208
+        Top = 4
+        Width = 19
+        Height = 13
+        Anchors = [akLeft, akBottom]
+        Caption = 'Port'
+      end
+      object txtClientHost: TEdit
+        Left = 0
+        Top = 20
+        Width = 201
+        Height = 21
+        Anchors = [akLeft, akBottom]
+        BevelKind = bkFlat
+        BorderStyle = bsNone
+        TabOrder = 0
+        Text = '192.168.1.31'
+      end
+      object txtClientPort: TEdit
+        Left = 208
+        Top = 20
+        Width = 113
+        Height = 21
+        Anchors = [akLeft, akBottom]
+        BevelKind = bkFlat
+        BorderStyle = bsNone
+        TabOrder = 1
+        Text = '33000'
+      end
+      object btnConnect: TButton
+        Left = 0
+        Top = 53
+        Width = 75
+        Height = 25
+        Anchors = [akLeft, akBottom]
+        Caption = 'Connect'
+        TabOrder = 2
+      end
+      object btnDisconnect: TButton
+        Left = 88
+        Top = 53
+        Width = 75
+        Height = 25
+        Anchors = [akLeft, akBottom]
+        Caption = 'Disconnect'
+        Enabled = False
+        TabOrder = 3
+      end
+    end
   end
 end

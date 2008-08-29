@@ -4,7 +4,7 @@ object dmMain: TdmMain
   OnDestroy = DataModuleDestroy
   Left = 627
   Top = 108
-  Height = 185
+  Height = 257
   Width = 229
   object fgMain: TFilterGraph
     Mode = gmCapture
@@ -40,7 +40,7 @@ object dmMain: TdmMain
     Bindings = <>
     CommandHandlers = <>
     CommandHandlersEnabled = False
-    DefaultPort = 0
+    DefaultPort = 33000
     Greeting.NumericCode = 0
     MaxConnectionReply.NumericCode = 0
     OnExecute = TCPServerExecute

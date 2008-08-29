@@ -7,19 +7,33 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls,
-  DSPack, DSUtil, DirectShow9;
+  DSPack, DSUtil, DirectShow9, ComCtrls;
 
 type
   TSettingsF = class(TForm)
-    cbxCameras: TComboBox;
-    Label1: TLabel;
-    cbxFormats: TComboBox;
-    Label2: TLabel;
     btnOK: TButton;
     btnCancel: TButton;
     btnApply: TButton;
+    PageControl1: TPageControl;
+    TabSheet1: TTabSheet;
+    Label1: TLabel;
+    Label2: TLabel;
     Label3: TLabel;
+    cbxCameras: TComboBox;
+    cbxFormats: TComboBox;
     cbxCodecs: TComboBox;
+    chkPreview: TCheckBox;
+    TabSheet2: TTabSheet;
+    Label5: TLabel;
+    txtServerPort: TEdit;
+    chkServer: TCheckBox;
+    TabSheet3: TTabSheet;
+    Label4: TLabel;
+    Label6: TLabel;
+    txtClientHost: TEdit;
+    txtClientPort: TEdit;
+    btnConnect: TButton;
+    btnDisconnect: TButton;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure cbxCamerasChange(Sender: TObject);
@@ -37,7 +51,7 @@ var
 implementation
 
 uses
-  dmMainU, DisplayU, ActiveX;
+  dmMainU, DisplayU, ActiveX, Preview;
 
 {$R *.dfm}
 
@@ -61,6 +75,8 @@ procedure TSettingsF.FormCreate(Sender: TObject);
 var
   I: Integer;
 begin
+  PageControl1.ActivePageIndex := 0;
+
   DevEnum := TSysDevEnum.Create(CLSID_VideoInputDeviceCategory);
   VideoMediaTypes := TEnumMediaType.Create;
 
@@ -112,8 +128,9 @@ var
   PinList: TPinList;
   ok: Boolean;
   bmih: TBitmapInfoHeader;
+  DefPort: Integer;
 begin
-  if (cbxCameras.ItemIndex > -1) and (cbxFormats.ItemIndex > -1) then
+  if (cbxCameras.ItemIndex > -1) and (cbxFormats.ItemIndex > -1) then begin
     with dmMain do begin
       if fgMain.Active then begin
         fgMain.Stop;
@@ -159,14 +176,35 @@ begin
           RenderStream(@PIN_CATEGORY_CAPTURE, nil, dsfCam as IBaseFilter, nil, sgVideo as IBaseFilter);
 
           // Connect Video preview (VideoWindow)
-          if dsfCam.BaseFilter.DataLength > 0 then
+          if chkPreview.Checked and (dsfCam.BaseFilter.DataLength > 0) then begin
+            frmPreview.VideoWindow.FilterGraph := dmMain.fgMain;
             RenderStream(@PIN_CATEGORY_PREVIEW, nil, dsfCam as IBaseFilter,
-              nil, DisplayF.VideoWindow as IBaseFilter);
+              nil, frmPreview.VideoWindow as IBaseFilter);
+            if not frmPreview.Visible then
+              frmPreview.Show;
+          end else begin
+            frmPreview.VideoWindow.FilterGraph := nil;
+            frmPreview.Hide;
+          end;
         except
         end;
 
       fgMain.Play;
+
+      DefPort := StrToIntDef(txtServerPort.Text, 33000);
+      if dmMain.TCPServer.DefaultPort <> DefPort then
+        dmMain.TCPServer.Active := False;
+      dmMain.TCPServer.DefaultPort := StrToIntDef(txtServerPort.Text, 33000);
+      dmMain.TCPServer.Active := chkServer.Checked;
     end;
+  end else begin
+    dmMain.TCPServer.Active := False;
+  end;
+
+  if dmMain.TCPServer.Active then
+    DisplayF.lbServerSt.Caption := 'ON'
+  else
+    DisplayF.lbServerSt.Caption := 'OFF';
 end;
 
 end.

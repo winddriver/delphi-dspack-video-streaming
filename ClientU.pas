@@ -102,43 +102,50 @@ begin
   Caption := FCC.AsString;
   bmihOut := InputFormat;
   FrameRate := 30;
-  InputFormat.biCompression:=0; // rgb - used to decompress
-  InputFormat.biBitCount:=24;   // decompress to 24 bit rgb
+  InputFormat.biCompression :=0;  // rgb - used to decompress
+  InputFormat.biBitCount := 24;   // decompress to 24 bit rgb
   VideoCoDec.Finish;
   VideoCoDec.Init(InputFormat, bmihOut, 100, 10);
   VideoCoDec.SetDataRate(1024, 1000 * 1000 div FrameRate, 1);
   if not VideoCoDec.StartDeCompressor then
-  Caption:=TranslateICError(VideoCoDec.LastError);
-  imgDisplay.Height:=InputFormat.biHeight;
-  imgDisplay.Width:=InputFormat.biWidth;
+    Caption := TranslateICError(VideoCoDec.LastError);
+  imgDisplay.Height := InputFormat.biHeight;
+  imgDisplay.Width  := InputFormat.biWidth;
 end;
 
 procedure TClientF.tmrDisplayTimer(Sender: TObject);
-var CH: TCommHeader;
-    Data: PByte;
+var
+  CH: TCommHeader;
+  Data: PByte;
 begin
-     if not VideoCoDec.DecompressorStarted then exit;
-     ZeroMemory(@CH, SizeOf(CH));
-     CH.DPType:=2; // request the frame
-     TCPClient.WriteBuffer(CH, SizeOf(CH), true);
-     // read the frame
-     TCPClient.ReadBuffer(CH, SizeOf(CH));
-     if CH.DPType <> 2 then exit; // not a frame packet
-     if CH.DPSize < 1 then exit;
-     GetMem(Data, CH.DPSize);
-     try
-        TCPClient.ReadBuffer(Data^, CH.DPSize);
-        if VideoCoDec.UnpackBitmap(Data, Boolean(CH.DPCode), imgDisplay.Picture.Bitmap) then
-        begin
-          Inc(FFrames);
-          Inc(FKeyFrames, CH.DPCode);
-          imgDisplay.Repaint;
-          Caption:=Format('Frames: %d (%d kf)', [FFrames, FKeyFrames]);
-          Update;
-        end;
-     finally
-        FreeMem(Data);
-     end;
+  if not VideoCoDec.DecompressorStarted then
+    Exit;
+
+  ZeroMemory(@CH, SizeOf(CH));
+  CH.DPType := 2; // request the frame
+  TCPClient.WriteBuffer(CH, SizeOf(CH), True);
+
+  // Read the frame
+  TCPClient.ReadBuffer(CH, SizeOf(CH));
+
+  if CH.DPType <> 2 then
+    Exit; // not a frame packet
+  if CH.DPSize < 1 then
+    Exit;
+
+  GetMem(Data, CH.DPSize);
+  try
+    TCPClient.ReadBuffer(Data^, CH.DPSize);
+    if VideoCoDec.UnpackBitmap(Data, Boolean(CH.DPCode), imgDisplay.Picture.Bitmap) then begin
+      Inc(FFrames);
+      Inc(FKeyFrames, CH.DPCode);
+      imgDisplay.Repaint;
+      Caption := Format('Frames: %d (%d kf)', [FFrames, FKeyFrames]);
+      Update;
+    end;
+  finally
+    FreeMem(Data);
+  end;
 end;
 
 end.

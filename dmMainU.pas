@@ -6,10 +6,10 @@ interface
 {.$DEFINE MANUALYUY2TORGB} //debug ON /OFF
 
 uses
-  Windows, Graphics, SysUtils, Classes, Forms,
+  Windows, Graphics, SysUtils, Classes, Forms, ExtCtrls,
   IdThreadMgr, IdThreadMgrDefault, IdBaseComponent, IdComponent, IdTCPServer,
-  VideoCoDec, DSPack,
-  CommonU;
+  DSPack, DirectShow9,
+  CommonU, VideoCoDec;
 
 type
   TYUY2Word = packed record
@@ -50,7 +50,8 @@ var
 
 implementation
 
-uses DisplayU, DirectShow9;
+uses
+  DisplayU, Preview;
 
 {$R *.dfm}
 
@@ -130,7 +131,7 @@ begin
   LastFrame := TBitmap.Create;
   {$ENDIF}
   TCPServer.DefaultPort := 33000;
-  TCPServer.Active := True;
+  //TCPServer.Active := True;
 end;
 
 procedure TdmMain.DataModuleDestroy(Sender: TObject);
@@ -197,12 +198,12 @@ begin
   VideoCoDec.Init(InputFormat, bmihOut, 100, 10);
   VideoCoDec.SetDataRate(1024, 1000 * 1000 div FrameRate, 1);
   if not VideoCoDec.StartCompressor then
-    DisplayF.Caption := TranslateICError(VideoCoDec.LastError)
-  else
-    DisplayF.Caption:=VideoCoDec.CodecDescription;
+    DisplayF.Caption := TranslateICError(VideoCoDec.LastError);
+  //else
+  //  DisplayF.Caption:=VideoCoDec.CodecDescription;
 
-  DisplayF.ClientHeight := InputFormat.biHeight;
-  DisplayF.ClientWidth := InputFormat.biWidth;
+  frmPreview.ClientHeight := InputFormat.biHeight;
+  frmPreview.ClientWidth  := InputFormat.biWidth;
 end;
 
 procedure TdmMain.sgVideoBuffer(sender: TObject; SampleTime: Double;
