@@ -34,12 +34,19 @@ type
     txtClientPort: TEdit;
     btnConnect: TButton;
     btnDisconnect: TButton;
+    lbFrames: TLabel;
+    Label7: TLabel;
+    lbFCC: TLabel;
+    Label8: TLabel;
+    lbClientError: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure cbxCamerasChange(Sender: TObject);
     procedure btnCancelClick(Sender: TObject);
     procedure btnOKClick(Sender: TObject);
     procedure btnApplyClick(Sender: TObject);
+    procedure btnConnectClick(Sender: TObject);
+    procedure btnDisconnectClick(Sender: TObject);
   private
     DevEnum: TSysDevEnum;
     VideoMediaTypes: TEnumMediaType;
@@ -51,7 +58,7 @@ var
 implementation
 
 uses
-  dmMainU, DisplayU, ActiveX, Preview;
+  dmMainU, DisplayU, ActiveX, Preview, ClientDM;
 
 {$R *.dfm}
 
@@ -205,6 +212,18 @@ begin
     DisplayF.lbServerSt.Caption := 'ON'
   else
     DisplayF.lbServerSt.Caption := 'OFF';
+end;
+
+procedure TSettingsF.btnConnectClick(Sender: TObject);
+begin
+  dmClient.TCPClient.Host := txtClientHost.Text;
+  dmClient.TCPClient.Port := StrToIntDef(txtClientPort.Text, 33000);
+  dmClient.TCPClient.Connect;
+end;
+
+procedure TSettingsF.btnDisconnectClick(Sender: TObject);
+begin
+  dmClient.TCPClient.Disconnect;
 end;
 
 end.

@@ -17,6 +17,7 @@ object dmClient: TdmClient
   end
   object tmrDisplay: TTimer
     Enabled = False
+    OnTimer = tmrDisplayTimer
     Left = 116
     Top = 24
   end

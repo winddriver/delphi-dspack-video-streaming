@@ -198,9 +198,10 @@ begin
   VideoCoDec.Init(InputFormat, bmihOut, 100, 10);
   VideoCoDec.SetDataRate(1024, 1000 * 1000 div FrameRate, 1);
   if not VideoCoDec.StartCompressor then
-    DisplayF.Caption := TranslateICError(VideoCoDec.LastError);
-  //else
-  //  DisplayF.Caption:=VideoCoDec.CodecDescription;
+    DisplayF.Caption := TranslateICError(VideoCoDec.LastError)
+  else
+    //DisplayF.Caption := VideoCoDec.CodecDescription;
+    DisplayF.Caption := 'Delphi Streaming';
 
   frmPreview.ClientHeight := InputFormat.biHeight;
   frmPreview.ClientWidth  := InputFormat.biWidth;

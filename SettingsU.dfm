@@ -191,6 +191,41 @@ object SettingsF: TSettingsF
         Anchors = [akLeft, akBottom]
         Caption = 'Port'
       end
+      object lbFrames: TLabel
+        Left = 0
+        Top = 96
+        Width = 46
+        Height = 13
+        Caption = 'Frames: 0'
+      end
+      object Label7: TLabel
+        Left = 0
+        Top = 120
+        Width = 23
+        Height = 13
+        Caption = 'FCC:'
+      end
+      object lbFCC: TLabel
+        Left = 28
+        Top = 120
+        Width = 20
+        Height = 13
+        Caption = 'FCC'
+      end
+      object Label8: TLabel
+        Left = 0
+        Top = 144
+        Width = 25
+        Height = 13
+        Caption = 'Error:'
+      end
+      object lbClientError: TLabel
+        Left = 32
+        Top = 144
+        Width = 24
+        Height = 13
+        Caption = 'none'
+      end
       object txtClientHost: TEdit
         Left = 0
         Top = 20
@@ -221,6 +256,7 @@ object SettingsF: TSettingsF
         Anchors = [akLeft, akBottom]
         Caption = 'Connect'
         TabOrder = 2
+        OnClick = btnConnectClick
       end
       object btnDisconnect: TButton
         Left = 88
@@ -231,6 +267,7 @@ object SettingsF: TSettingsF
         Caption = 'Disconnect'
         Enabled = False
         TabOrder = 3
+        OnClick = btnDisconnectClick
       end
     end
   end
